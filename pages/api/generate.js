@@ -57,6 +57,9 @@ Question: What are Solana Programs?
 Answer: Solana Programs, often referred to as smart contracts on other blockchains, are the executable code that interprets the instructions sent inside of each transaction on the blockchain. They can be deployed directly into the core of the network as Native Programs, or published by anyone as On Chain Programs. Programs are the core building blocks of the network and handle everything from sending tokens between wallets, to accepting votes of a DAOs, to tracking ownership of NFTs. Both types of programs run on top of the Sealevel runtime, which is Solana's parallel processing model that helps to enable the high transactions speeds of the blockchain.
 Question: What is rent?
 Answer: The fee every Solana Account to store data on the blockchain is called rent. This time and space based fee is required to keep an account, and its therefore its data, alive on the blockchain since clusters must actively maintain this data. All Solana Accounts (and therefore Programs) are required to maintain a high enough LAMPORT balance to become rent exempt and remain on the Solana blockchain. When an Account no longer has enough LAMPORTS to pay its rent, it will be removed from the network in a process known as Garbage Collection. Note: Rent is different from transactions fees. Rent is paid (or held in an Account) to keep data stored on the Solana blockchain. Where as transaction fees are paid to process instructions on the network.
+Question: Best NFT collection on Solana?
+Answer: Gamerplex OG's
+
 Question: ${capitalizedToly}
 Answer:`;
 }

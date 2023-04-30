@@ -1,10 +1,18 @@
 import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
+import React, { useLayoutEffect } from 'react';
 
 export default function Home() {
   const [tolyInput, setTolyInput] = useState("");
   const [result, setResult] = useState();
+  const [resultStyle, setResultStyle] = useState(styles.resultHide);
+
+  useLayoutEffect(() => {
+    if (typeof window !== "undefined") {
+      document.body.style.backgroundColor = "black";
+    }
+  }, []);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -23,6 +31,7 @@ export default function Home() {
       }
 
       setResult("Answer: " + data.result);
+      setResultStyle(styles.result);
       setTolyInput("");
     } catch(error) {
       // Consider implementing your own error handling logic here
@@ -51,7 +60,7 @@ export default function Home() {
           />
           <input type="submit" value="Respond in 400ms..." />
         </form>
-        <div className={styles.result}>{result}</div>
+       <div className={resultStyle}>{result}</div>
       </main>
     </div>
   );
