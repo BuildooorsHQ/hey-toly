@@ -19,6 +19,7 @@
   line-height: 24px;
   color: #353740;
   font-family: "ColfaxAI", Helvetica, sans-serif;
+  background-color: black;
 }
 .main {
   display: flex;
@@ -27,13 +28,13 @@
   padding-top: 60px;
 }
 .main .icon {
-  width: 420px;
+  width: 320px;
 }
 .main h3 {
   font-size: 32px;
   line-height: 40px;
   font-weight: bold;
-  color: #202123;
+  color: #CCC;
   margin: 16px 0 40px;
 }
 .main form {
