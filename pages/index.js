@@ -62,6 +62,12 @@ export default function Home() {
         </form>
        <div className={resultStyle}>{result}</div>
       </main>
+      <footer>
+        <div className={styles.footer}>
+          <p>* ChatGPT may produce inaccurate information about people, places, or facts.</p>
+          <p>Made with 💜, React & ChatGPT 3.5 Model text-davinci-003 by <a href="https://github.com/johnforfar/hey-toly">John Forfar</a>.</p>
+        </div>
+      </footer>
     </div>
   );
 }
