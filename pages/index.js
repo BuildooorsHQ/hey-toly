@@ -22,7 +22,7 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      setResult("Superhero Names: " + data.result);
+      setResult("Answer: " + data.result);
       setTolyInput("");
     } catch(error) {
       // Consider implementing your own error handling logic here
@@ -45,7 +45,7 @@ export default function Home() {
           <input
             type="text"
             name="prompt"
-            placeholder="Enter your favourite blockchain..."
+            placeholder="Ask me a question about Solana..."
             value={tolyInput}
             onChange={(e) => setTolyInput(e.target.value)}
           />
