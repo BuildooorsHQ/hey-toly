@@ -30,6 +30,7 @@ export default async function (req, res) {
       model: "text-davinci-003",
       prompt: generatePrompt(toly),
       temperature: 0.6,
+      max_tokens: 256,
     });
     res.status(200).json({ result: completion.data.choices[0].text });
   } catch(error) {
@@ -49,8 +50,7 @@ export default async function (req, res) {
 }
 
 function generatePrompt(toly) {
-  const capitalizedToly =
-    toly[0].toUpperCase() + toly.slice(1).toLowerCase();
+  const capitalizedToly = toly[0].toUpperCase() + toly.slice(1).toLowerCase();
   return `Return technical answer to question about the Solana Blockchain in 10 words or less.
 
 Question: What are Solana Programs?

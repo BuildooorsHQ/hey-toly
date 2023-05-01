@@ -2,6 +2,8 @@ import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
 import React, { useLayoutEffect } from 'react';
+// import {FiTwitter} from 'react-icons/fa';
+import { FaTiktok, FaTwitter} from 'react-icons/fa';
 
 export default function Home() {
   const [tolyInput, setTolyInput] = useState("");
@@ -22,7 +24,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ toly: tolyInput }),
+        body: JSON.stringify({ toly: tolyInput,  }),
       });
 
       const data = await response.json();
@@ -64,6 +66,7 @@ export default function Home() {
       </main>
       <footer>
         <div className={styles.footer}>
+          <p><a href="https://twitter.com/hey_toly"><FaTwitter /></a></p>
           <p>* ChatGPT may produce inaccurate information about people, places, or facts.</p>
           <p>Made with 💜, React & ChatGPT 3.5 Model text-davinci-003 by <a href="https://github.com/johnforfar/hey-toly">John Forfar</a>.</p>
         </div>
