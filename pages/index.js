@@ -3,11 +3,21 @@ import { useState, useEffect } from "react";
 import styles from "./index.module.css";
 import React, { useLayoutEffect } from 'react';
 import { FaTwitter, FaGithub, FaGlobe } from 'react-icons/fa';
-import ReactGA from 'react-ga';
+//import ReactGA from 'react-ga';
 
 // Google Analytics
-const TRACKING_ID = "G-TB36V4C169"; 
-ReactGA.initialize(TRACKING_ID);
+//ReactGA.initialize(TRACKING_ID);*/
+
+const TRACKING_ID = 'G-TB36V4C169';
+
+const GA_TRACKING_CODE = `
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '${TRACKING_ID}', {
+    page_path: window.location.pathname,
+  });
+`;
 
 export default function Home() {
   const [tolyInput, setTolyInput] = useState("");
@@ -15,6 +25,18 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [resultStyle, setResultStyle] = useState(styles.resulthide);
   const [buttonStyle, setButtonStyle] = useState(styles.buttonhide);
+
+  // const MyApp = ({ Component, pageProps }) => {
+  //   return (
+  //     <>
+  //       <Head>
+  //         <script async src={`https://www.googletagmanager.com/gtag/js?id=${TRACKING_ID}`}></script>
+  //         <script dangerouslySetInnerHTML={{ __html: GA_TRACKING_CODE }} />
+  //       </Head>
+  //       <Component {...pageProps} />
+  //     </>
+  //   )
+  // }
 
   useLayoutEffect(() => {
     if (typeof window !== "undefined") {
@@ -70,6 +92,8 @@ export default function Home() {
       <Head>
         <title>Hey Toly</title>
         <link rel="icon" href="/toly001.jpg" />
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${TRACKING_ID}`}></script>
+        <script dangerouslySetInnerHTML={{ __html: GA_TRACKING_CODE }} />
       </Head>
 
       <main className={styles.main}>
