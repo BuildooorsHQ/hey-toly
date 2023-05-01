@@ -3,6 +3,11 @@ import { useState, useEffect } from "react";
 import styles from "./index.module.css";
 import React, { useLayoutEffect } from 'react';
 import { FaTwitter, FaGithub, FaGlobe } from 'react-icons/fa';
+import ReactGA from 'react-ga';
+
+// Google Analytics
+const TRACKING_ID = "G-TB36V4C169"; 
+ReactGA.initialize(TRACKING_ID);
 
 export default function Home() {
   const [tolyInput, setTolyInput] = useState("");
