@@ -47,7 +47,7 @@
   padding: 12px 16px;
   border: 1px solid #10a37f;
   border-radius: 4px;
-  margin-bottom: 24px;
+  margin-bottom: 40px;
   outline-color: #10a37f;
 }
 .main ::placeholder {
@@ -85,4 +85,47 @@
 }
 .footer a:hover {
   color: #FFF;
+}
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+}
+.buttonclear {
+  padding: 4px 0;
+  color: #000;
+  background-color: #fffff;
+  border: none;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+}
+.buttonshare {
+  display: inline-block;
+  writing-mode: horizontal-tb !important;
+  padding: 4px 0;
+  color: #000;
+  background-color: #fff;
+  border: none;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  width: 320px;
+}
+.buttonhide {
+  display: none;
+}
+.resulthide {
+  display: none;
+}
+.footerIcons {
+  font-size: 2em;
+  padding: 10px;
 }

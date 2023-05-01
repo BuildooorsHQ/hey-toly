@@ -51,7 +51,7 @@ export default async function (req, res) {
 
 function generatePrompt(toly) {
   const capitalizedToly = toly[0].toUpperCase() + toly.slice(1).toLowerCase();
-  return `Return technical answer to question about the Solana Blockchain in 10 words or less.
+  return `Return technical answer to question about the Solana Blockchain.
 
 Question: What are Solana Programs?
 Answer: Solana Programs, often referred to as smart contracts on other blockchains, are the executable code that interprets the instructions sent inside of each transaction on the blockchain. They can be deployed directly into the core of the network as Native Programs, or published by anyone as On Chain Programs. Programs are the core building blocks of the network and handle everything from sending tokens between wallets, to accepting votes of a DAOs, to tracking ownership of NFTs. Both types of programs run on top of the Sealevel runtime, which is Solana's parallel processing model that helps to enable the high transactions speeds of the blockchain.
