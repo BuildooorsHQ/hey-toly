@@ -25,8 +25,7 @@ export default function Home() {
 
   useLayoutEffect(() => {
     if (typeof window !== "undefined") {
-      document.body.style.background = "black"
-      //"--color-primary: #7d7aff; --color-gradient-1: #7d7aff; --color-gradient-2: #2121e2; --color-gradient-3: #00fff0; --color-gradient-4: #8785ff;";
+      document.body.style.background = "linear-gradient(to right, #0f0c29, #302b63, #24243e)"; // CSS gradient dot io
     }
   }, []);
 
