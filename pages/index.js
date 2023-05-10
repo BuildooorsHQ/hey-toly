@@ -3,12 +3,9 @@ import { useState, useEffect } from "react";
 import styles from "./index.module.css";
 import React, { useLayoutEffect } from 'react';
 import { FaTwitter, FaGithub, FaGlobe } from 'react-icons/fa';
-//import ReactGA from 'react-ga';
 
 // Google Analytics
-//ReactGA.initialize(TRACKING_ID);*/
-
-const TRACKING_ID = 'G-TB36V4C169';
+const TRACKING_ID = process.env.GA_KEY;
 
 const GA_TRACKING_CODE = `
   window.dataLayer = window.dataLayer || [];
@@ -26,21 +23,10 @@ export default function Home() {
   const [resultStyle, setResultStyle] = useState(styles.resulthide);
   const [buttonStyle, setButtonStyle] = useState(styles.buttonhide);
 
-  // const MyApp = ({ Component, pageProps }) => {
-  //   return (
-  //     <>
-  //       <Head>
-  //         <script async src={`https://www.googletagmanager.com/gtag/js?id=${TRACKING_ID}`}></script>
-  //         <script dangerouslySetInnerHTML={{ __html: GA_TRACKING_CODE }} />
-  //       </Head>
-  //       <Component {...pageProps} />
-  //     </>
-  //   )
-  // }
-
   useLayoutEffect(() => {
     if (typeof window !== "undefined") {
-      document.body.style.backgroundColor = "black";
+      document.body.style.background = "black"
+      //"--color-primary: #7d7aff; --color-gradient-1: #7d7aff; --color-gradient-2: #2121e2; --color-gradient-3: #00fff0; --color-gradient-4: #8785ff;";
     }
   }, []);
 
@@ -88,7 +74,7 @@ export default function Home() {
   }
 
   return (
-    <div>
+    <div className="heyTolyBg">
       <Head>
         <title>Hey Toly</title>
         <link rel="icon" href="/toly001.jpg" />

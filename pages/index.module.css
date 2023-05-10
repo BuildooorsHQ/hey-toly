@@ -13,6 +13,15 @@
   font-weight: bold;
   font-style: normal;
 }
+.heyTolyBg {
+  --color-primary: #7d7aff;
+    --color-gradient-1: #7d7aff;
+    --color-gradient-2: #2121e2;
+    --color-gradient-3: #00fff0;
+    --color-gradient-4: #8785ff;
+    --font-primary: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    --font-secondary: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
 .main,
 .main input {
   font-size: 16px;
