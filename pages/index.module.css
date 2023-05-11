@@ -22,7 +22,9 @@
   line-height: 24px;
   color: #EEE;
   font-family: "ColfaxAI", Helvetica, sans-serif;
-  /*background-color: black;*/
+  background-color: #24243e;
+  border-color: #20e3b2;
+  padding: 10px;
 }
 .main {
   display: flex;
