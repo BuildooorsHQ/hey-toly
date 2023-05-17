@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import { OpenAI } from "langchain";
+// import { OpenAI } from "langchain";
 import React, { useState, useEffect, Fragment } from "react";
 import { FaTwitter, FaGithub, FaGlobe } from "react-icons/fa";
 import Head from "next/head";
@@ -10,10 +10,13 @@ const TRACKING_ID = process.env.GA_KEY;
 
 // Langchain model
 dotenv.config();
+
+/* LANGCHAIN MODEL yet to be integrated
 const model = new OpenAI({
   modelName: "gpt-3.5-turbo",
   openAIApiKey: process.env.OPENAI_API_KEY,
 });
+*/
 
 const GA_TRACKING_CODE = `
   window.dataLayer = window.dataLayer || [];
@@ -61,9 +64,13 @@ export default function Home() {
       setResult(`Answer: ${data.result}`);
       setResultStyle(styles.result);
       setButtonStyle(styles.buttonshare);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert(error.message);
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert('An error occurred');
+      }
     } finally {
       setLoading(false);
     }
@@ -113,7 +120,7 @@ export default function Home() {
           <div className={resultStyle}>{result}</div>
           <button
             className={buttonStyle}
-            type="clear"
+            type="button"
             onClick={() =>
               window.open(
                 `https://twitter.com/intent/tweet?url=${encodeURIComponent(
