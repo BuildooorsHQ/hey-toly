@@ -1,0 +1,13 @@
+/* Langchain console log output, replacing with Next front-end
+
+async function main() {
+  const res = await model.call(
+    "What's a good idea for an application to build with GPT-3?"
+  );
+
+  console.log(res);
+}
+
+main().catch((error) => console.error(error));
+
+*/

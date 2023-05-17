@@ -23,5 +23,6 @@ export default async function getFreshRecords(req, res) {
         return res.status(200).json(records);
     } catch (error) {
         console.error(error);
+        return res.status(500).json({ error: 'An error occurred' });
     }
 }
