@@ -6,12 +6,12 @@ import styles from "./index.module.css";
 // Google Analytics
 const TRACKING_ID = process.env.GA_KEY;
 const GA_TRACKING_CODE = `
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', '${TRACKING_ID}', {
-    page_path: window.location.pathname,
-  });
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){dataLayer.push(arguments);}
+ gtag('js', new Date());
+ gtag('config', '${TRACKING_ID}', {
+ page_path: window.location.pathname,
+ });
 `;
 
 export default function Home() {
@@ -40,24 +40,33 @@ export default function Home() {
         body: JSON.stringify({ toly: tolyInput }),
       });
 
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw (
-          data.error ||
-          new Error(`Request failed with status ${response.status}`)
+      console.log("Index response: ", response);
+
+      // Check if the response is ok
+      if (response.ok) {
+        const data: Record<string, string> = await response.json();
+
+        console.log("Index data: ", data);
+
+        // Check if data is undefined
+        if (data === undefined) {
+          // Log an error message
+          console.error("data is undefined");
+        } else {
+          // Set the result state
+          setResult(`Answer: ${data}`);
+          setResultStyle(styles.result);
+          setButtonStyle(styles.buttonshare);
+        }
+      } else {
+        // Throw an error with the status code and message
+        throw new Error(
+          `Request failed with status ${response.status}: ${response.statusText}`
         );
       }
-
-      setResult(`Answer: ${data.result}`);
-      setResultStyle(styles.result);
-      setButtonStyle(styles.buttonshare);
-    } catch (error: any) {
+    } catch (error) {
+      console.log("Index error: ", error);
       console.error(error);
-      if (error instanceof Error) {
-        alert(error.message);
-      } else {
-        alert('An error occurred');
-      }
     } finally {
       setLoading(false);
     }
@@ -126,10 +135,7 @@ export default function Home() {
         <footer>
           <div className={styles.footer}>
             <p>
-              <a
-                className={styles.footerIcons}
-                href="https://twitter.com/hey_toly"
-              >
+              <a className={styles.footerIcons} href="https://twitter.com/hey_toly">
                 <FaTwitter />
               </a>{" "}
               <a
@@ -142,12 +148,10 @@ export default function Home() {
                 <FaGlobe />
               </a>
             </p>
+            <p>* ChatGPT may produce inaccurate information about people, places,</p>
+            <p>or facts.</p>
             <p>
-              * ChatGPT may produce inaccurate information about people, places,
-              or facts.
-            </p>
-            <p>
-              Made with 💜, React & ChatGPT 3.5 Model text-davinci-003 tuned by{" "}
+              Made with 💜, Next, React, Langchain & ChatGPT gpt-3.5-turbo tuned by{" "}
               <a href="https://github.com/johnforfar/hey-toly">John Forfar</a>.
             </p>
           </div>

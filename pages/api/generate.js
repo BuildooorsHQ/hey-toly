@@ -1,5 +1,5 @@
 import { ChatOpenAI } from "langchain/chat_models/openai";
-import { HumanChatMessage, SystemChatMessage, AIChatMessage } from "langchain/schema";
+import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
 import saveToDb from "./saveToDb.js";
 
 function generatePrompt(toly) {
@@ -41,9 +41,11 @@ export default async function handler(req, res) {
  ]);
 
  // Add a console log output of the response
- console.log("API Response: ", response);
+ console.log("Generate API Response 1: ", response);
 
  const { text } = response;
+
+ console.log("Generate Text: ", text);
 
  // Send the text as the completion
  res.status(200).json({ completion: text });
