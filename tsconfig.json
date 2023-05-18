@@ -15,10 +15,11 @@
     "module": "nodenext",
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "baseUrl": "./src",
+    "baseUrl": "./pages", // changed from src to pages
     "paths": {
       "@/*": [
-        "./*"
+        "./*",
+        "./pages/*" // added pages
       ]
     },
     "declaration": true,
@@ -38,5 +39,5 @@
     "jsx": "preserve"
   },
   "exclude": ["node_modules/", "dist/", "tests/"],
-  "include": ["./src"]
+  "include": ["next-env.d.ts", "./pages", "**/*.tsx", "**/*"] // changed from src to pages
 }

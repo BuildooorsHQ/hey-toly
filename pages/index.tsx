@@ -1,4 +1,3 @@
-import * as dotenv from "dotenv";
 // import { OpenAI } from "langchain";
 import React, { useState, useEffect, Fragment } from "react";
 import { FaTwitter, FaGithub, FaGlobe } from "react-icons/fa";
@@ -9,8 +8,6 @@ import styles from "./index.module.css";
 const TRACKING_ID = process.env.GA_KEY;
 
 // Langchain model
-dotenv.config();
-
 /* LANGCHAIN MODEL yet to be integrated
 const model = new OpenAI({
   modelName: "gpt-3.5-turbo",
