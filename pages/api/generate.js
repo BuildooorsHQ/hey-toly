@@ -31,12 +31,15 @@ export default async function handler(req, res) {
  const chat = new ChatOpenAI({ temperature: 0, apiKey: process.env.OPENAI_API_KEY, modelName: "gpt-3.5-turbo" });
  // Add some logging statements to check the input and options
  console.log([new SystemChatMessage("This is a technical FAQ chatbot that answers questions about Toly."), new HumanChatMessage(generatePrompt(toly))]);
- console.log({ temperature: 0.5, apiKey: process.env.OPENAI_API_KEY });
+ console.log({ temperature: 0.9, apiKey: process.env.OPENAI_API_KEY });
  const response = await chat.call([
  // Add a SystemChatMessage as the first message
  new SystemChatMessage("This is a technical FAQ chatbot that answers questions about Toly."),
  new HumanChatMessage(generatePrompt(toly)),
  ]);
+
+ // Add a console log output of the response
+ console.log(response);
 
  // Check if the response is valid and has choices
  if (response && response.choices && response.choices.length > 0) {
