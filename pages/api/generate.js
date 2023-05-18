@@ -33,7 +33,6 @@ export default async function handler(req, res) {
     ]);
 
     const removeEscapedCharacters = (str) => str.replace(/\\n/g, '\n');
-
     const text = removeEscapedCharacters(response.choices[0].message.content);
 
     res.status(200).json({ completion: text });
@@ -41,10 +40,23 @@ export default async function handler(req, res) {
   } catch (error) {
     // Error handling
     console.error(`Error with Langchain API request: ${error.message}`);
+
+    if (error.response) {
+      // The request was made and the API responded with an error
+      console.error(`API response status: ${error.response.status}`);
+      console.error(`API response data: ${JSON.stringify(error.response.data)}`);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error(`No response received from the API. Request details: ${error.request}`);
+    } else {
+      // Other types of errors
+      console.error(`Error message: ${error.message}`);
+    }
+
     res.status(500).json({
       error: {
         message: 'An error occurred during your request.',
-      }
+      },
     });
   }
 }
