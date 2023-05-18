@@ -1,5 +1,4 @@
 import { Configuration, OpenAIApi } from "openai";
-// import generatePrompt from "./generatePrompt.js";
 import saveToDb from "./saveToDb.js";
 
 const configuration = new Configuration({
@@ -53,7 +52,7 @@ export default async function handler(req, res) {
     res.status(200).json({ result: completion.data.choices[0].text });
     saveToDb("heytoly", "faqs", { toly, result: completion.data.choices[0].text });
   } catch (error) {
-    // Consider adjusting the error handling logic for your use case
+    // Error handling
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.status(error.response.status).json(error.response.data);
