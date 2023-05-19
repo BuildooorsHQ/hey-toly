@@ -54,7 +54,7 @@ export default function Home() {
           console.error("data is undefined");
         } else {
           // Set the result state
-          setResult(`Answer: ${data}`);
+          setResult(`Answer: ${data.completion}`);
           setResultStyle(styles.result);
           setButtonStyle(styles.buttonshare);
         }
