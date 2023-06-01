@@ -1,7 +1,9 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { FaTwitter, FaGithub, FaGlobe } from "react-icons/fa";
 import Head from "next/head";
-import styles from "./index.module.css";
+import Link from "next/link";
+import styles from "./input.module.css";
+import "./api/solanaRouter.ts";
 
 // Google Analytics
 const TRACKING_ID = process.env.GA_KEY;
@@ -86,6 +88,7 @@ export default function Home() {
         </Head>
 
         <main className={styles.main}>
+          <Link href="/scraper/status"><a>Scraper Status</a></Link>
           <img src="/toly001.jpg" className={styles.icon} />
           <h3>Hey Toly...</h3>
           <form onSubmit={onSubmit}>
