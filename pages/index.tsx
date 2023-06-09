@@ -1,7 +1,9 @@
+// ./pages/index.tsx
 import React, { useState, useEffect, Fragment } from "react";
 import { FaTwitter, FaGithub, FaGlobe } from "react-icons/fa";
 import Head from "next/head";
-import styles from "./index.module.css";
+import Link from "next/link";
+import styles from "./input.module.css";
 
 // Google Analytics
 const TRACKING_ID = process.env.GA_KEY;
@@ -16,10 +18,10 @@ const GA_TRACKING_CODE = `
 
 export default function Home() {
   const [tolyInput, setTolyInput] = useState("");
-  const [result, setResult] = useState<string | undefined>();
   const [loading, setLoading] = useState(false);
   const [resultStyle, setResultStyle] = useState(styles.resulthide);
   const [buttonStyle, setButtonStyle] = useState(styles.buttonhide);
+  const [result, setResult] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -32,37 +34,62 @@ export default function Home() {
     event.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ toly: tolyInput }),
-      });
-
-      console.log("Index response: ", response);
-
-      // Check if the response is ok
-      if (response.ok) {
-        const data: Record<string, string> = await response.json();
-
-        console.log("Index data: ", data);
-
-        // Check if data is undefined
-        if (data === undefined) {
-          // Log an error message
-          console.error("data is undefined");
-        } else {
-          // Set the result state
-          setResult(`Answer: ${data.completion}`);
+      const publicKeyRegex = /[1-9A-HJ-NP-Za-km-z]{32,44}/;
+      const match = tolyInput.match(publicKeyRegex);
+  
+      if (match) {
+        // Directly retrieve the wallet balance for a valid Solana wallet address
+        const publicKey = match[0];
+        const balanceResponse = await fetch("/api/solanaRouter", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ address: publicKey }),
+        });
+  
+        if (balanceResponse.ok) {
+          const balanceData = await balanceResponse.json();
+          const balance = balanceData.sol;
+          setResult(`Wallet Balance: ${balance}`);
           setResultStyle(styles.result);
           setButtonStyle(styles.buttonshare);
+        } else {
+          throw new Error(
+            `Request failed with status ${balanceResponse.status}: ${balanceResponse.statusText}`
+          );
         }
       } else {
-        // Throw an error with the status code and message
-        throw new Error(
-          `Request failed with status ${response.status}: ${response.statusText}`
-        );
+        // Perform the regular ChatGPT interaction
+        const response = await fetch("/api/generate", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ toly: tolyInput }),
+        });
+  
+        console.log("Index response: ", response);
+  
+        if (response.ok) {
+          const data: Record<string, string> = await response.json();
+  
+          console.log("Index data: ", data);
+  
+          if (data === undefined) {
+            console.error("data is undefined");
+          } else {
+            const generatedResponse = data.completion;
+  
+            setResult(generatedResponse);
+            setResultStyle(styles.result);
+            setButtonStyle(styles.buttonshare);
+          }
+        } else {
+          throw new Error(
+            `Request failed with status ${response.status}: ${response.statusText}`
+          );
+        }
       }
     } catch (error) {
       console.log("Index error: ", error);
@@ -71,6 +98,20 @@ export default function Home() {
       setLoading(false);
     }
   }
+
+
+  // Move the response handling logic to the rendering logic
+  const renderResponse = () => {
+    if (result) {
+      return (
+        <div className={resultStyle}>
+          <h4>Result:</h4>
+          <p>{result}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   return (
     <Fragment>
@@ -86,6 +127,9 @@ export default function Home() {
         </Head>
 
         <main className={styles.main}>
+          <Link href="/scraper/status">
+            <a>Scraper Status</a>
+          </Link>
           <img src="/toly001.jpg" className={styles.icon} />
           <h3>Hey Toly...</h3>
           <form onSubmit={onSubmit}>
@@ -113,7 +157,7 @@ export default function Home() {
               <input type="submit" value="Respond in 400ms..." />
             )}
           </form>
-          <div className={resultStyle}>{result}</div>
+          {renderResponse()} {/* Call the renderResponse function */}
           <button
             className={buttonStyle}
             type="button"
