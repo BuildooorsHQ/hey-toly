@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @font-face {
   font-family: "ColfaxAI";
   src: url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff2)
@@ -22,7 +26,7 @@
   line-height: 24px;
   color: #EEE;
   font-family: "ColfaxAI", Helvetica, sans-serif;
-  background-color: #24243e;
+  /*background-color: #24243e;*/
   border-color: #20e3b2;
   padding: 10px;
 }
