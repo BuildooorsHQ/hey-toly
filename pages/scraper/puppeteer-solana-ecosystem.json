@@ -1,0 +1,21 @@
+[
+  {
+    "name": "Secretum",
+    "description": "Revolutionary Secure Messaging & Trading Dapp powered by Solana",
+    "category": "App",
+    "link": "https://secretum.io/"
+  },
+  {
+    "name": "HDOKI",
+    "description": "An entertainment ecosystem with crypto-backed rewards.",
+    "category": "App Game NFTs",
+    "link": "https://hdoki.com/"
+  },
+  {
+    "name": "MetaVersana",
+    "description":
+      "The first B2E/P2E virtual platform provides the ability to do Business, Create, Play, and Earn in a virtual world owned by its users.",
+    "category": "Game Metaplex Tools",
+    "link": "https://metaversana.com/"
+  }
+]
