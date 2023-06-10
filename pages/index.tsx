@@ -4,6 +4,14 @@ import { FaTwitter, FaGithub, FaGlobe } from "react-icons/fa";
 import Head from "next/head";
 import Link from "next/link";
 import styles from "./input.module.css";
+import {
+  processBalance,
+  processAPIRequest,
+  processTransaction,
+  processCollections,
+  processSolanaPay,
+  processTxLink,
+} from "./inputProcessor.ts";
 
 // Google Analytics
 const TRACKING_ID = process.env.GA_KEY;
@@ -61,65 +69,11 @@ export default function Home() {
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
-
     try {
-      const publicKeyRegex = /[1-9A-HJ-NP-Za-km-z]{32,44}/;
-      const match = tolyInput.match(publicKeyRegex);
-
-      if (match) {
-        // Directly retrieve the wallet balance for a valid Solana wallet address
-        const publicKey = match[0];
-        const balanceResponse = await fetch("/api/solanaRouter", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ address: publicKey }),
-        });
-  
-        if (balanceResponse.ok) {
-          const balanceData = await balanceResponse.json();
-          const balance = balanceData.sol;
-          setResult(`Wallet Balance: ${balance}`);
-          setResultStyle(styles.result);
-          setButtonStyle(styles.buttonshare);
-        } else {
-          throw new Error(
-            `Request failed with status ${balanceResponse.status}: ${balanceResponse.statusText}`
-          );
-        }
-      } else {
-        // Perform the regular ChatGPT interaction
-        const response = await fetch("/api/generate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ toly: tolyInput }),
-        });
-  
-        console.log("Index response: ", response);
-  
-        if (response.ok) {
-          const data: Record<string, string> = await response.json();
-  
-          console.log("Index data: ", data);
-  
-          if (data === undefined) {
-            console.error("data is undefined");
-          } else {
-            const generatedResponse = data.completion;
-  
-            setResult(generatedResponse);
-            setResultStyle(styles.result);
-            setButtonStyle(styles.buttonshare);
-          }
-        } else {
-          throw new Error(
-            `Request failed with status ${response.status}: ${response.statusText}`
-          );
-        }
-      }
+      const generatedResponse = await processInput(tolyInput);
+      setResult(generatedResponse); // Assign the generated response to the result state
+      setResultStyle(styles.result); // Show the result
+      setButtonStyle(styles.buttonshare); // Show the share button
     } catch (error) {
       console.log("Index error: ", error);
       console.error(error);
@@ -127,6 +81,19 @@ export default function Home() {
       setLoading(false);
     }
   }
+
+  // Move the response handling logic to the rendering logic
+  const renderResponse = () => {
+    if (result) {
+      return (
+        <div className={resultStyle}>
+          <h4>Result:</h4>
+          <p>{result}</p>
+        </div>
+      );
+    }
+    return null;
+  };
 
   // Move the response handling logic to the rendering logic
   const renderResponse = () => {
