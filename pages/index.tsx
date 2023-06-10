@@ -24,6 +24,34 @@ export default function Home() {
   const [result, setResult] = useState("");
 
   useEffect(() => {
+    // Testing vector search
+    const performSearch = async () => {
+      try {
+        const res = await fetch('/api/searchProject', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ query: 'MetaVersana' }),
+        });
+
+        if (!res.ok) {
+          throw new Error(res.statusText);
+        }
+
+        const result = await res.json();
+
+        console.log(result);
+      } catch (error) {
+        console.error("Search error: ", error);
+      }
+    };
+
+    performSearch();
+  }, []);
+  // end vector search code
+
+  useEffect(() => {
     if (typeof window !== "undefined") {
       document.body.style.background =
         "linear-gradient(to right, #0f0c29, #302b63, #24243e)"; // CSS gradient dot io
@@ -33,10 +61,11 @@ export default function Home() {
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLoading(true);
+
     try {
       const publicKeyRegex = /[1-9A-HJ-NP-Za-km-z]{32,44}/;
       const match = tolyInput.match(publicKeyRegex);
-  
+
       if (match) {
         // Directly retrieve the wallet balance for a valid Solana wallet address
         const publicKey = match[0];
@@ -98,7 +127,6 @@ export default function Home() {
       setLoading(false);
     }
   }
-
 
   // Move the response handling logic to the rendering logic
   const renderResponse = () => {
