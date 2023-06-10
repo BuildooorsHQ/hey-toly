@@ -4,14 +4,8 @@ import { FaTwitter, FaGithub, FaGlobe } from "react-icons/fa";
 import Head from "next/head";
 import Link from "next/link";
 import styles from "./input.module.css";
-import {
-  processBalance,
-  processAPIRequest,
-  processTransaction,
-  processCollections,
-  processSolanaPay,
-  processTxLink,
-} from "../utils/inputProcessor.ts";
+import { processInput } from "../utils/inputProcessor.ts";
+import { performOutputAction } from "../utils/outputAction.ts";
 
 // Google Analytics
 const TRACKING_ID = process.env.GA_KEY;
@@ -27,12 +21,11 @@ const GA_TRACKING_CODE = `
 export default function Home() {
   const [tolyInput, setTolyInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState("");
   const [resultStyle, setResultStyle] = useState(styles.resulthide);
   const [buttonStyle, setButtonStyle] = useState(styles.buttonhide);
-  const [result, setResult] = useState("");
 
   useEffect(() => {
-    // Testing vector search
     const performSearch = async () => {
       try {
         const res = await fetch('/api/searchProject', {
@@ -57,7 +50,6 @@ export default function Home() {
 
     performSearch();
   }, []);
-  // end vector search code
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -71,9 +63,17 @@ export default function Home() {
     setLoading(true);
     try {
       const generatedResponse = await processInput(tolyInput);
-      setResult(generatedResponse); // Assign the generated response to the result state
-      setResultStyle(styles.result); // Show the result
-      setButtonStyle(styles.buttonshare); // Show the share button
+      console.log("Generated response: ", generatedResponse); // Log the response
+
+      const handleOutputAction = performOutputAction(
+        generatedResponse,
+        setResult,
+        setResultStyle,
+        setButtonStyle
+      );
+
+      handleOutputAction(tolyInput); // Pass tolyInput as a parameter
+      console.log("New result state after onSubmit: ", result);
     } catch (error) {
       console.log("Index error: ", error);
       console.error(error);
@@ -82,21 +82,8 @@ export default function Home() {
     }
   }
 
-  // Move the response handling logic to the rendering logic
   const renderResponse = () => {
-    if (result) {
-      return (
-        <div className={resultStyle}>
-          <h4>Result:</h4>
-          <p>{result}</p>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  // Move the response handling logic to the rendering logic
-  const renderResponse = () => {
+    console.log("Rendering result: ", result);
     if (result) {
       return (
         <div className={resultStyle}>
@@ -140,8 +127,7 @@ export default function Home() {
               type="button"
               onClick={() => {
                 setTolyInput("");
-                setResultStyle(styles.resulthide);
-                setButtonStyle(styles.buttonhide);
+                setResult("");
               }}
             >
               Clear
@@ -152,7 +138,7 @@ export default function Home() {
               <input type="submit" value="Respond in 400ms..." />
             )}
           </form>
-          {renderResponse()} {/* Call the renderResponse function */}
+          {renderResponse()}
           <button
             className={buttonStyle}
             type="button"

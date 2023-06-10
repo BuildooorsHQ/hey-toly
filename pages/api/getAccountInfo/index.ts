@@ -1,4 +1,5 @@
-import { NextApiRequest } from "next";
+// ./pages/api/getAccountInfo/index.ts
+import { NextApiRequest, NextApiResponse } from "next";
 import { PublicKey, Connection, Keypair } from "@solana/web3.js";
 import {
   Program,
@@ -10,17 +11,15 @@ import NodeWallet from "@coral-xyz/anchor/dist/cjs/nodewallet";
 
 import { CONNECTION } from "../../../constants.ts";
 
-interface AccountInfo {
-  address: string;
-  balance: number;
-  extended: string;
-}
-
+/**
+ * Replace Anchor data (BNs, PublicKeys) with stringified data
+ * @param obj
+ * @returns
+ */
 function stringifyAnchorObject(obj: any): any {
   if (obj instanceof BN) {
     return obj.toString();
   }
-
   if (obj instanceof PublicKey) {
     return obj.toString();
   }
@@ -35,12 +34,19 @@ function stringifyAnchorObject(obj: any): any {
   return obj;
 }
 
+/**
+ * Returns accountInfo or extends it with deserialized account data if the account is a program account of an Anchor program
+ * @param accountAddress
+ * @returns
+ */
 async function getParsedAccountInfo(
   connection: Connection,
   accountAddress: PublicKey
-): Promise<AccountInfo> {
-  const accountInfo = await connection.getAccountInfo(accountAddress);
+): Promise<object> {
+  // TODO: copy the explorer code here that manually deserializes a bunch of stuff, like Mango & Pyth
 
+  const accountInfo = await connection.getAccountInfo(accountAddress);
+  // If account is not a program, check for Anchor IDL
   if (accountInfo?.owner && !accountInfo.executable) {
     try {
       const program = await Program.at(
@@ -50,6 +56,7 @@ async function getParsedAccountInfo(
         })
       );
 
+      // Search through Anchor IDL for the account type
       const rawData = accountInfo.data;
       const coder = new BorshAccountsCoder(program.idl);
       const accountDefTmp = program.idl.accounts?.find((accountType: any) =>
@@ -58,13 +65,19 @@ async function getParsedAccountInfo(
           .equals(BorshAccountsCoder.accountDiscriminator(accountType.name))
       );
 
+      // If we found the Anchor IDL type, decode the account state
       if (accountDefTmp) {
         const accountDef = accountDefTmp;
+
+        // Decode the anchor data & stringify the data
         const decodedAccountData = stringifyAnchorObject(
           coder.decode(accountDef.name, rawData)
         );
 
-        const payload: AccountInfo = {
+        // Inspect the anchor data for fun 🤪
+        console.log(decodedAccountData);
+
+        const payload = {
           ...accountInfo,
           extended: JSON.stringify(decodedAccountData),
         };
@@ -78,8 +91,9 @@ async function getParsedAccountInfo(
 }
 
 export default async function getAccountInfo(
-  req: NextApiRequest
-): Promise<AccountInfo> {
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   try {
     console.log("getAccountInfo: Request received", req.body);
 
@@ -90,9 +104,9 @@ export default async function getAccountInfo(
 
     console.log("getAccountInfo: Account info retrieved", accountInfo);
 
-    return accountInfo;
+    res.status(200).json({ message: JSON.stringify(accountInfo) });
   } catch (error) {
     console.error("getAccountInfo: Error occurred", error);
-    throw error;
+    res.status(500).json({ error: "Internal Server Error" });
   }
 }

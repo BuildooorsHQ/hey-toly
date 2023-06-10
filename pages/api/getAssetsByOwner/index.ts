@@ -1,6 +1,6 @@
 // ./pages/api/getAssetsByOwner/index.ts
-import { Request, Response } from "express";
-import { PublicKey } from "@solana/web3.js";
+import { NextApiRequest, NextApiResponse } from "next";
+// import { PublicKey } from "@solana/web3.js";
 import axios from "axios";
 import { HELIUS_URL } from "../../../constants.ts";
 
@@ -11,7 +11,7 @@ import { HELIUS_URL } from "../../../constants.ts";
  * @param limit (optional) set to 5 to prevent overflowing GPT context window
  * @returns
  */
-const _getAssetsByOwner = async (address: string, number = 1, number = 5) => {
+const _getAssetsByOwner = async (address: string, page = 1, limit = 5) => {
   const sortBy = {
     sortBy: "created",
     sortDirection: "asc",
@@ -27,7 +27,10 @@ const _getAssetsByOwner = async (address: string, number = 1, number = 5) => {
   return data.result;
 };
 
-export default async function getAssetsByOwner(req: Request, res: Response) {
+export default async function getAssetsByOwner(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   try {
     console.log("getAssetsByOwner: Request received", req.body);
 
@@ -38,9 +41,13 @@ export default async function getAssetsByOwner(req: Request, res: Response) {
 
     console.log("getAssetsByOwner: Assets retrieved", assets);
 
-    res.status(200).send({ message: JSON.stringify(assets) });
+    res.status(200).json({ assets });
   } catch (error) {
     console.error("getAssetsByOwner: Error occurred", error);
-    res.status(500).send({ error: error.message });
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unexpected error occurred" });
+    }
   }
 }

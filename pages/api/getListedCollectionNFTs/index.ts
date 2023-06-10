@@ -1,5 +1,5 @@
 // ./pages/api/getListedCollectionNFTs/index.ts
-import { Request, Response } from "express";
+import { NextApiRequest, NextApiResponse } from "next";
 import { HYPERSPACE_CLIENT } from "../../../constants.ts";
 
 type NFTListing = {
@@ -65,12 +65,31 @@ async function hyperspaceGetListedCollectionNFTs(
   };
 }
 
-export async function getListedCollectionNFTs(req: Request, res: Response) {
-  const { projectId, pageSize, priceOrder } = req.body;
-  const result = await hyperspaceGetListedCollectionNFTs(
-    projectId,
-    pageSize,
-    priceOrder
-  );
-  res.status(200).json(result);
+export default async function getListedCollectionNFTs(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  try {
+    console.log("getListedCollectionNFTs: Request received", req.body);
+
+    const { projectId, pageSize, priceOrder } = req.body;
+
+    // Perform your logic here to retrieve the NFTs
+    const result = await hyperspaceGetListedCollectionNFTs(
+      projectId,
+      pageSize,
+      priceOrder
+    );
+
+    console.log("getListedCollectionNFTs: NFTs retrieved", result);
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("getListedCollectionNFTs: Error occurred", error);
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "An unexpected error occurred" });
+    }
+  }
 }

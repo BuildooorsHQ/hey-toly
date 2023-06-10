@@ -1,9 +1,12 @@
 // ./pages/api/getBalance/index.ts
-import { NextApiRequest } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import { PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { CONNECTION } from "../../../constants.ts";
 
-export default async function getBalance(req: NextApiRequest) {
+export default async function getBalance(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   try {
     console.log("getBalance: Request received", req.body);
 
@@ -15,9 +18,9 @@ export default async function getBalance(req: NextApiRequest) {
 
     console.log("getBalance: Balance calculated", calculatedBalance);
 
-    return calculatedBalance;
+    res.status(200).json({ sol: calculatedBalance });
   } catch (error) {
     console.error("getBalance: Error occurred", error);
-    throw error; // Throw the error to handle it in the solanaRouter endpoint
+    res.status(500).json({ error: "Internal Server Error" });
   }
 }
