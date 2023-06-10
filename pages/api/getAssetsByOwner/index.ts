@@ -1,8 +1,8 @@
 // ./pages/api/getAssetsByOwner/index.ts
 import { Request, Response } from "express";
 import { PublicKey } from "@solana/web3.js";
-import { HELIUS_URL } from "../../constants";
 import axios from "axios";
+import { HELIUS_URL } from "../../../constants.ts";
 
 /**
  * Returns the data from the Metaplex Read API
@@ -11,11 +11,7 @@ import axios from "axios";
  * @param limit (optional) set to 5 to prevent overflowing GPT context window
  * @returns
  */
-const _getAssetsByOwner = async (
-  address: string,
-  page: number = 1,
-  limit: number = 5
-) => {
+const _getAssetsByOwner = async (address: string, number = 1, number = 5) => {
   const sortBy = {
     sortBy: "created",
     sortDirection: "asc",

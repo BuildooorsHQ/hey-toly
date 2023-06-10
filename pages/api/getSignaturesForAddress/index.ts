@@ -1,6 +1,7 @@
+// ./pages/api/getSignaturesForAddress/index.ts
 import { Request, Response } from "express";
 import { PublicKey } from "@solana/web3.js";
-import { CONNECTION } from "../../constants";
+import { CONNECTION } from "../../../constants.ts";
 
 export async function getSignaturesForAddress(req: Request, res: Response) {
   const accountAddress = new PublicKey(req.body.address);
@@ -9,7 +10,7 @@ export async function getSignaturesForAddress(req: Request, res: Response) {
     before: req.body.beforeSignature ?? null,
     until: req.body.untilSignature ?? null,
   });
-  res.status(200).send({
+  res.status(200).json({
     hasMore: signatures.length === 11,
     nextPage:
       signatures.length === 11

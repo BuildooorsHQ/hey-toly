@@ -1,7 +1,8 @@
+// ./pages/api/getTokenAccounts/index.ts
 import { Request, Response } from "express";
 import { PublicKey } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { CONNECTION } from "../../constants";
+import { CONNECTION } from "../../../constants.ts";
 
 type TokenInfo = {
   mint: string;
@@ -9,15 +10,20 @@ type TokenInfo = {
 };
 
 export async function getTokenAccounts(req: Request, res: Response) {
-  let result = await CONNECTION.getParsedTokenAccountsByOwner(
+  const result = await CONNECTION.getParsedTokenAccountsByOwner(
     new PublicKey(req.body.address),
     { programId: TOKEN_PROGRAM_ID },
     "confirmed"
   );
   const tokenInfos: TokenInfo[] = [];
-  for (const accountInfo of result.value) {
-    const info = accountInfo.account.data.parsed.info;
-    if (info.tokenAmount.uiAmount !== 0) {
+  for (const {
+    account: {
+      data: {
+        parsed: { info },
+      },
+    },
+  } of result.value) {
+    if (info.tokenAmount.uiAmount !== "0") {
       tokenInfos.push({
         mint: info.mint.toString(),
         amount: info.tokenAmount.uiAmountString,

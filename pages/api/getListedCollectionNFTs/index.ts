@@ -1,5 +1,6 @@
+// ./pages/api/getListedCollectionNFTs/index.ts
 import { Request, Response } from "express";
-import { HYPERSPACE_CLIENT } from "../../constants";
+import { HYPERSPACE_CLIENT } from "../../../constants.ts";
 
 type NFTListing = {
   price: number;
@@ -14,14 +15,14 @@ type ListedNFTResponse = {
 
 async function hyperspaceGetListedCollectionNFTs(
   projectId: string,
-  pageSize: number = 5,
-  priceOrder: string = "DESC"
+  pageSize = 5,
+  priceOrder = "DESC"
 ): Promise<ListedNFTResponse> {
   let listedNFTs: NFTListing[] = [];
   let hasMore = true;
   let pageNumber = 1;
   while (listedNFTs.length < pageSize && hasMore) {
-    let results = await HYPERSPACE_CLIENT.getMarketplaceSnapshot({
+    const results = await HYPERSPACE_CLIENT.getMarketplaceSnapshot({
       condition: {
         projects: [{ project_id: projectId }],
         onlyListings: true,
@@ -35,28 +36,25 @@ async function hyperspaceGetListedCollectionNFTs(
       },
     });
 
-    let snaps = results.getMarketPlaceSnapshots.market_place_snapshots!;
-    let orderedListings = snaps.sort(
-      (a, b) => a.lowest_listing_mpa!.price! - b.lowest_listing_mpa!.price!
+    const snaps = results.getMarketPlaceSnapshots.market_place_snapshots ?? [];
+    const orderedListings = snaps.sort(
+      (a, b) =>
+        (a.lowest_listing_mpa?.price ?? 0) - (b.lowest_listing_mpa?.price ?? 0)
     );
 
     pageNumber += 1;
-    let crucialInfo: NFTListing[] = orderedListings
+    const crucialInfo: NFTListing[] = orderedListings
       .filter(
         (arr) =>
-          // We filter out Magic Eden's marketplace because they
-          // require an API key to make purchases programmatically
           arr.lowest_listing_mpa?.marketplace_program_id !==
           "M2mx93ekt1fmXSVkTrUL9xVFHkmME8HTUi5Cyc5aF7K"
       )
-      .map((arr) => {
-        return {
-          price: arr.lowest_listing_mpa!.price!,
-          token: arr.token_address,
-          image: arr.meta_data_img ?? "",
-          marketplace: arr.lowest_listing_mpa!.marketplace_program_id!,
-        };
-      });
+      .map((arr) => ({
+        price: arr.lowest_listing_mpa?.price ?? 0,
+        token: arr.token_address,
+        image: arr.meta_data_img ?? "",
+        marketplace: arr.lowest_listing_mpa?.marketplace_program_id ?? "",
+      }));
     listedNFTs = listedNFTs.concat(crucialInfo);
     hasMore = results.getMarketPlaceSnapshots.pagination_info.has_next_page;
   }
@@ -74,5 +72,5 @@ export async function getListedCollectionNFTs(req: Request, res: Response) {
     pageSize,
     priceOrder
   );
-  res.status(200).send(JSON.stringify(result));
+  res.status(200).json(result);
 }

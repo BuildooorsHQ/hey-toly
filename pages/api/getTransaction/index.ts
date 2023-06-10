@@ -1,10 +1,11 @@
+// ./pages/api/getTransaction/index.ts
 import { Request, Response } from "express";
-import { CONNECTION } from "../../constants";
+import { CONNECTION } from "../../../constants.ts";
 
 export async function getTransaction(req: Request, res: Response) {
-  const signature = req.body.signature;
+  const { signature } = req.body;
   const transaction = await CONNECTION.getTransaction(signature, {
     maxSupportedTransactionVersion: 2,
   });
-  res.status(200).send(JSON.stringify(transaction));
+  res.status(200).json(transaction);
 }

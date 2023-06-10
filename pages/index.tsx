@@ -11,7 +11,7 @@ import {
   processCollections,
   processSolanaPay,
   processTxLink,
-} from "./inputProcessor.ts";
+} from "../utils/inputProcessor.ts";
 
 // Google Analytics
 const TRACKING_ID = process.env.GA_KEY;
