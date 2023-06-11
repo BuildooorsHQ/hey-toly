@@ -1,6 +1,13 @@
 // ./utils/inputProcessor.ts
 import { logUserInput } from "./outputAction.ts";
 
+function formatProjectSearchResult(data: any): string {
+  if (data && data.name && data.description && data.link) {
+    return `Project Name: ${data.name}\nDescription: ${data.description}\nLink: ${data.link}`;
+  }
+  return "No matching project found.";
+}
+
 export async function processInput(tolyInput: string): Promise<string> {
   logUserInput(tolyInput);
 
@@ -46,6 +53,25 @@ export async function processInput(tolyInput: string): Promise<string> {
         );
       }
     }
+  }
+
+  if (tolyInput.includes("project")) {
+    const response = await fetch("/api/searchProject", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ query: tolyInput }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Response from project search:", data);
+      return formatProjectSearchResult(data);
+    }
+    throw new Error(
+      `Request failed with status ${response.status}: ${response.statusText}`
+    );
   }
 
   const response = await fetch("/api/generate", {

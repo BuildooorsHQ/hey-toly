@@ -26,32 +26,12 @@ export default function Home() {
   const [buttonStyle, setButtonStyle] = useState(styles.buttonhide);
 
   useEffect(() => {
-    const performSearch = async () => {
-      try {
-        const res = await fetch('/api/searchProject', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ query: 'MetaVersana' }),
-        });
+    // Initialize VectorStore
+    fetch('/api/init')
+      .then(response => response.json())
+      .then(data => console.log(data.status))
+      .catch(error => console.error('Initialization error:', error));
 
-        if (!res.ok) {
-          throw new Error(res.statusText);
-        }
-
-        const result = await res.json();
-
-        console.log(result);
-      } catch (error) {
-        console.error("Search error: ", error);
-      }
-    };
-
-    performSearch();
-  }, []);
-
-  useEffect(() => {
     if (typeof window !== "undefined") {
       document.body.style.background =
         "linear-gradient(to right, #0f0c29, #302b63, #24243e)"; // CSS gradient dot io

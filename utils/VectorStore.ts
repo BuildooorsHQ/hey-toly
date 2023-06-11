@@ -1,5 +1,7 @@
-// ./utils/VectorStore.ts
+// utils/VectorStore.ts
 import { HNSWLib } from "langchain/vectorstores/hnswlib";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { JSONLoader } from "langchain/document_loaders/fs/json";
 
 export interface Project {
   name: string;
@@ -19,4 +21,20 @@ export class VectorStore {
     category: "AI",
     link: "http://heytoly.com",
   };
+
+  async initialize() {
+    const loader = new JSONLoader(
+      "./pages/scraper/puppeteer-solana-ecosystem.json"
+    );
+    const docs = await loader.load();
+
+    // Load the docs into the vector store
+    this.vectorStore = await HNSWLib.fromDocuments(
+      docs,
+      new OpenAIEmbeddings()
+    );
+  }
 }
+
+// Create a global instance
+export const vectorStoreInstance = new VectorStore();
