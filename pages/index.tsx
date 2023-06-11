@@ -19,7 +19,7 @@ const GA_TRACKING_CODE = `
 `;
 
 export default function Home() {
-  const [tolyInput, setTolyInput] = useState("");
+  const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState("");
   const [resultStyle, setResultStyle] = useState(styles.resulthide);
@@ -42,7 +42,7 @@ export default function Home() {
     event.preventDefault();
     setLoading(true);
     try {
-      const generatedResponse = await processInput(tolyInput);
+      const generatedResponse = await processInput(userInput);
       console.log("Generated response: ", generatedResponse); // Log the response
 
       const handleOutputAction = performOutputAction(
@@ -52,7 +52,7 @@ export default function Home() {
         setButtonStyle
       );
 
-      handleOutputAction(tolyInput); // Pass tolyInput as a parameter
+      handleOutputAction(userInput);
       console.log("New result state after onSubmit: ", result);
     } catch (error) {
       console.log("Index error: ", error);
@@ -99,14 +99,14 @@ export default function Home() {
               type="text"
               name="prompt"
               placeholder="Ask me a question about Solana..."
-              value={tolyInput}
-              onChange={(e) => setTolyInput(e.target.value)}
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
             />
             <button
               className={styles.buttonclear}
               type="button"
               onClick={() => {
-                setTolyInput("");
+                setUserInput("");
                 setResult("");
               }}
             >
@@ -127,7 +127,7 @@ export default function Home() {
                 `https://twitter.com/intent/tweet?url=${encodeURIComponent(
                   "https://heytoly.com"
                 )}&text=${encodeURIComponent(
-                  `@hey_toly 🤖\n\nQuestion: ${tolyInput} \n\n${result}\n\n 🔥 #HeyToly #ChatGPT #AI @buildooors_com #OPOS`
+                  `@hey_toly 🤖\n\nQuestion: ${userInput} \n\n${result}\n\n 🔥 #HeyToly #ChatGPT #AI @buildooors_com #OPOS`
                 )}`,
                 "_blank",
                 "noopener noreferrer"

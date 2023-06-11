@@ -1,3 +1,4 @@
+// ./pages/api/latest.js
 import { MongoClient } from 'mongodb';
 
 export default async function getFreshRecords(req, res) {
