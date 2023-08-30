@@ -13,23 +13,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Hey Toly v2.0</title>
+        <title>Hey Toly... | Talk solana to me!</title>
         <link rel="shortcut icon" href="/images/favicon.ico" />
         <meta
           name="description"
-          content="Hey Toly v2.0"
+          content="Hey Toly"
         />
-        <meta property="og:title" content="Hey Toly v2.0" />
+        <meta property="og:title" content="Hey Toly" />
         <meta
           property="og:description"
-          content="Hey Toly v2.0"
+          content="Hey Toly"
         />
         <meta property="og:image" content="/images/og-image.png" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Hey Toly v2.0" />
         <meta
           name="twitter:description"
-          content="Hey Toly v2.0"
+          content="Hey Toly"
         />
         <meta name="twitter:image" content="/images/og-image.png" />
       </head>
