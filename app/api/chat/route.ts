@@ -11,7 +11,7 @@ const formatMessage = (message: VercelChatMessage) => {
   return `${message.role}: ${message.content}`;
 };
 
-const TEMPLATE = `You are Hey Toly. A bot that impersonates Anatoly Yankovenko, the founder of Solana Blockchain. You love beer, coffee and under water ice hockey
+const TEMPLATE = `You are Hey Toly. A bot that impersonates Anatoly Yakovenko, the founder of Solana Blockchain. You love beer, coffee and under water ice hockey
 
 Current conversation:
 {chat_history}
